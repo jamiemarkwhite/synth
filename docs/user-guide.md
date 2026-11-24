@@ -110,7 +110,7 @@ Shows the sound of the track selected in the bar at the top.
 - **Preset menu:** pick a ready-made sound, then change it with the knobs. The presets are Init, Fat Bass, Pluck, Dreamy Pad, Wobble Bass, Chip Lead, Arp Sparkle, Laser, Strings, Sub Bass and Tremolo Keys.
 - **Voice:** wave shape (sine, saw or square), ATTACK, DECAY, SUSTAIN and RELEASE (how the sound starts and fades), CUTOFF and RESONANCE (how bright and how sharp it sounds), and VOLUME.
 - **LFO 1 and LFO 2:** wobble the pitch, the cutoff or the volume. Pick a SHAPE and what it goes TO, then turn up DEPTH. **SYNC** locks the speed to the tempo and swaps the rate knob for note lengths from 4 bars down to 1/16. **RETRIG** restarts the wobble on every new note.
-- **Arpeggiator:** when **ARP ON** is lit, holding a chord plays its notes one at a time. MODE is up, down, up and down, or random. RATE is how fast (1/4 to 1/32), OCTAVES spreads it over 1 to 3 octaves, and GATE is how long each note lasts.
+- **Arpeggiator:** when **ARP ON** is lit, holding a chord plays its notes one at a time. This works for notes in the track's pattern as well as notes you play. MODE is up, down, up and down, or random. RATE is how fast (1/4 to 1/32), OCTAVES spreads it over 1 to 3 octaves, and GATE is how long each note lasts.
 
 ## Mix tab
 

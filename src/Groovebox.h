@@ -125,7 +125,8 @@ private:
     {
         SynthEngine synth;
         Arpeggiator arp;
-        juce::MidiBuffer liveMidi, midi;
+        juce::MidiBuffer arpInput; // live and pattern notes, before the arpeggiator
+        juce::MidiBuffer midi;     // what the synth plays
         bool arpWasEnabled = false;
     };
 

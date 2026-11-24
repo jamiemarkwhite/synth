@@ -11,7 +11,7 @@ All notable changes to this project are listed here. The format follows [Keep a 
 - **Synth tracks:** five synths playing at once (Bass, Strings, Lead, Keys, Sub Bass), each with its own sound, arpeggiator, octave, note length, mute, volume and melody grid.
   - Synth voice: sine, saw or square oscillator, 8 voices, ADSR, low-pass filter with resonance.
   - Two LFOs per track to pitch, cutoff or amp, with five shapes, tempo sync and retrigger.
-  - Arpeggiator per track: up, down, up and down, or random, over 1 to 3 octaves, at 1/4 to 1/32, with gate.
+  - Arpeggiator per track, for played notes and pattern notes: up, down, up and down, or random, over 1 to 3 octaves, at 1/4 to 1/32, with gate.
   - Eleven presets: Init, Fat Bass, Pluck, Dreamy Pad, Wobble Bass, Chip Lead, Arp Sparkle, Laser, Strings, Sub Bass, Tremolo Keys.
   - Octave from -1 to 7, numbered as in Logic.
 - **Melody grids:** 16 rows by 32 steps per track. No Scale (a semitone per row) by default, or one of six scales shared by all tracks, with a shared key. Notes can be drawn over several steps, resized by dragging and removed by clicking.

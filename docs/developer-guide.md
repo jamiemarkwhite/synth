@@ -55,8 +55,8 @@ CMake builds four things:
 3. Sends any note-offs that fall in this block, and plays notes previewed from the grid.
 4. If the editor selected a different synth track, releases the notes held on the old one.
 5. Turns pad taps and incoming MIDI into drum hits, sample hits and live notes. MIDI on channel 10 goes to the drums (notes 60 to 63 to the sample slots); anything else goes to the selected track. If recording, these are written into the pattern.
-6. Runs each track's arpeggiator.
-7. Calls `handleStep` for every step that starts in the block, which adds drum and sample hits, metronome clicks, and each track's notes. A drum, sample slot or synth track is skipped if it is muted, or if anything is soloed and it isn't.
+6. Calls `handleStep` for every step that starts in the block, which adds drum and sample hits, metronome clicks, and each track's notes. A drum, sample slot or synth track is skipped if it is muted, or if anything is soloed and it isn't.
+7. Runs each track's arpeggiator over its live and pattern notes (`SynthTrack::arpInput`). With the arp off, notes pass straight through to the synth.
 8. Renders each synth track and sums them, then renders drums and samples with each hit at its exact sample offset.
 9. Applies the echo to the synth tracks, adds drums and samples, applies reverb and master gain, adds the metronome click, then the limiter (-1 dB) and a hard clip at ±1.
 

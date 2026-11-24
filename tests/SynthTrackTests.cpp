@@ -294,6 +294,42 @@ public:
             expectGreaterThan (level (output, 500, 2500), 0.05f);
         }
 
+        beginTest ("The arpeggiator plays pattern notes one at a time");
+        {
+            auto params = cleanParams();
+            params.sequencer.root = 9;   // A, no scale: row 0 is A1 (110 Hz), row 12 is A2 (220 Hz)
+            params.tracks[0].octave = 1;
+            params.tracks[0].arp.enabled = true;
+            params.tracks[0].arp.division = 3; // 1/16, one note per step
+            params.tracks[0].arp.gate = 1.0f;
+
+            Rig rig (params);
+            rig.bank.setNote (0, 0, 0, 0, 8);
+            rig.bank.setNote (0, 0, 0, 12, 8);
+            rig.groovebox.setPlaying (true);
+            const auto output = rig.render (samplesPerStep * 10);
+
+            // 5000-sample windows: about 11 crossings at 110 Hz, 23 at 220 Hz.
+            expectWithinAbsoluteError (zeroCrossings (output, 500, 5500), 11, 1);
+            expectWithinAbsoluteError (zeroCrossings (output, samplesPerStep + 500, samplesPerStep + 5500), 23, 1);
+            expectWithinAbsoluteError (zeroCrossings (output, 2 * samplesPerStep + 500, 2 * samplesPerStep + 5500), 11, 1);
+            expect (level (output, 9 * samplesPerStep, 10 * samplesPerStep) < 0.001f, "the arp stopped when the notes ended");
+        }
+
+        beginTest ("Stopping playback stops an arpeggiated pattern");
+        {
+            auto params = cleanParams();
+            params.tracks[0].arp.enabled = true;
+            params.tracks[0].arp.gate = 1.0f;
+            Rig rig (params);
+            rig.bank.setNote (0, 0, 0, 0, 16);
+            rig.groovebox.setPlaying (true);
+            rig.render (samplesPerStep * 2);
+            rig.groovebox.setPlaying (false);
+            const auto output = rig.render (samplesPerStep * 3);
+            expect (level (output, samplesPerStep, 3 * samplesPerStep) < 0.001f, "nothing kept playing");
+        }
+
         beginTest ("A long note retriggered before it ends keeps playing");
         {
             auto params = cleanParams();

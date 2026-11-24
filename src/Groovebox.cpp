@@ -40,7 +40,7 @@ void Groovebox::prepare (double newSampleRate, int maxBlockSize)
     for (auto& track : tracks)
     {
         track->synth.prepare (sampleRate, maxBlockSize, 2);
-        track->liveMidi.ensureSize (2048);
+        track->arpInput.ensureSize (2048);
         track->midi.ensureSize (4096);
     }
 
@@ -267,7 +267,8 @@ void Groovebox::handleStep (juce::int64 step, int offset, double samplesPerStep,
 
 void Groovebox::playSequencerNote (int track, int note, int offset, juce::int64 lengthSamples, int numSamples)
 {
-    auto& midi = tracks[static_cast<size_t> (track)]->midi;
+    // Through the arpeggiator, which passes notes straight on when it is off.
+    auto& midi = tracks[static_cast<size_t> (track)]->arpInput;
 
     // A long note may still be held from an earlier step. End it here, or its late note-off
     // would cut this new note short.
@@ -302,7 +303,9 @@ void Groovebox::flushNoteOffs (int numSamples)
             continue;
 
         const auto offset = static_cast<int> (std::max<juce::int64> (0, pending.dueSample - sampleClock));
-        tracks[static_cast<size_t> (pending.track)]->midi.addEvent (juce::MidiMessage::noteOff (pending.channel, pending.note), offset);
+        auto& track = *tracks[static_cast<size_t> (pending.track)];
+        auto& midi = pending.channel == sequencerChannel ? track.arpInput : track.midi;
+        midi.addEvent (juce::MidiMessage::noteOff (pending.channel, pending.note), offset);
         noteOffs[static_cast<size_t> (i)] = noteOffs[static_cast<size_t> (--numNoteOffs)];
     }
 }
@@ -310,8 +313,15 @@ void Groovebox::flushNoteOffs (int numSamples)
 void Groovebox::stopSequencerNotes()
 {
     for (int i = numNoteOffs - 1; i >= 0; --i)
-        if (noteOffs[static_cast<size_t> (i)].channel == sequencerChannel)
-            noteOffs[static_cast<size_t> (i)] = noteOffs[static_cast<size_t> (--numNoteOffs)];
+    {
+        const auto& pending = noteOffs[static_cast<size_t> (i)];
+        if (pending.channel != sequencerChannel)
+            continue;
+
+        // Releases the note in the arpeggiator too.
+        tracks[static_cast<size_t> (pending.track)]->arpInput.addEvent (juce::MidiMessage::noteOff (sequencerChannel, pending.note), 0);
+        noteOffs[static_cast<size_t> (i)] = noteOffs[static_cast<size_t> (--numNoteOffs)];
+    }
 
     for (auto& track : tracks)
         track->midi.addEvent (juce::MidiMessage::allNotesOff (sequencerChannel), 0);
@@ -495,7 +505,7 @@ void Groovebox::process (juce::AudioBuffer<float>& output, const juce::MidiBuffe
     sampleBuffer.setSize (2, numSamples, false, false, true);
     for (auto& track : tracks)
     {
-        track->liveMidi.clear();
+        track->arpInput.clear();
         track->midi.clear();
     }
     numDrumHits = 0;
@@ -551,6 +561,7 @@ void Groovebox::process (juce::AudioBuffer<float>& output, const juce::MidiBuffe
         if (arpEnabled != track.arpWasEnabled)
         {
             track.midi.addEvent (juce::MidiMessage::allNotesOff (liveChannel), 0);
+            track.midi.addEvent (juce::MidiMessage::allNotesOff (sequencerChannel), 0);
             track.midi.addEvent (juce::MidiMessage::allNotesOff (Arpeggiator::outputChannel), 0);
             track.arpWasEnabled = arpEnabled;
         }
@@ -602,11 +613,8 @@ void Groovebox::process (juce::AudioBuffer<float>& output, const juce::MidiBuffe
         if (message.getChannel() > 0)
             message.setChannel (liveChannel);
 
-        live.liveMidi.addEvent (message, offset);
+        live.arpInput.addEvent (message, offset);
     }
-
-    for (auto& track : tracks)
-        track->arp.process (track->liveMidi, track->midi, numSamples, samplesPerBeat);
 
     if (runningNow)
     {
@@ -616,6 +624,10 @@ void Groovebox::process (juce::AudioBuffer<float>& output, const juce::MidiBuffe
         if (! followingHost)
             internalPosition += numSamples * stepsPerSample;
     }
+
+    // After the sequencer, so pattern notes are arpeggiated as well as live ones.
+    for (auto& track : tracks)
+        track->arp.process (track->arpInput, track->midi, numSamples, samplesPerBeat);
 
     synthBuffer.clear();
     for (auto& track : tracks)
