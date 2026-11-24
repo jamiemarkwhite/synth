@@ -192,7 +192,15 @@ The 16 slots next to **SONG** make a song out of patterns.
 
 ## Saving
 
-The standalone app saves everything when you quit and brings it back next time: patterns, sounds, settings and recorded samples. In Logic, everything is saved with the Logic project.
+The standalone app saves everything when you quit and brings it back next time: patterns, sounds, settings and recorded samples.
+
+To keep a song, or to have several, use the **Options** button at the top left of the window:
+
+- **Save current state...** saves everything to a file. Pick a folder and give it a name such as `robot-song`. Each file holds one whole session: all four patterns, the song, every sound and setting, and the recorded samples.
+- **Load a saved state...** opens a file you saved, replacing what's on screen. Save first if you want to keep what you have.
+- **Reset to default state** goes back to how μBeat starts the first time, with the demo song. To start with nothing at all, use **START FRESH** instead.
+
+In Logic, everything is saved with the Logic project.
 
 ## Using it in Logic
 
