@@ -4,6 +4,10 @@ All notable changes to this project are listed here. The format follows [Keep a 
 
 ## [Unreleased]
 
+### Added
+
+- **Start Fresh** button: after asking, empties every pattern, the song and the samples, and puts every sound and setting back to how it starts.
+
 ## [0.1.0] - 2026-11-24
 
 First release. Universal (Apple silicon and Intel) macOS builds of the app, AU and VST3.

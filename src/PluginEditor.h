@@ -39,6 +39,7 @@ private:
     void showPage (int index);
     void saveUndo();
     void undo();
+    void confirmStartFresh();
     void updateHeader();
 
     SynthAudioProcessor& synthProcessor;
@@ -58,6 +59,7 @@ private:
 
     std::array<juce::TextButton, 5> tabs;
     juce::TextButton songButton { "SONG" };
+    juce::TextButton freshButton { "START FRESH" };
     SongBar songBar;
 
     DrumPage drumPage;

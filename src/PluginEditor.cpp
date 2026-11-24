@@ -125,6 +125,11 @@ SynthAudioProcessorEditor::SynthAudioProcessorEditor (SynthAudioProcessor& p)
     for (auto* button : { &copyButton, &clearButton, &diceButton, &undoButton })
         content.addAndMakeVisible (*button);
 
+    freshButton.setColour (juce::TextButton::buttonOnColourId, Theme::red);
+    freshButton.setTooltip ("Empty everything: all patterns, the song and the samples. Sounds and settings go back to how they start.");
+    freshButton.onClick = [this] { confirmStartFresh(); };
+    content.addAndMakeVisible (freshButton);
+
     const std::array<std::pair<const char*, juce::Colour>, 5> tabInfo { {
         { "DRUMS", Theme::magenta }, { "SAMPLES", Theme::orange }, { "MELODY", Theme::cyan },
         { "SOUND", Theme::purple }, { "MIX", Theme::lime } } };
@@ -273,6 +278,8 @@ void SynthAudioProcessorEditor::layoutContent()
     navigation.removeFromLeft (20);
     songButton.setBounds (navigation.removeFromLeft (80));
     navigation.removeFromLeft (8);
+    freshButton.setBounds (navigation.removeFromRight (120));
+    navigation.removeFromRight (12);
     songBar.setBounds (navigation);
 
     area.removeFromTop (12);
@@ -304,6 +311,27 @@ void SynthAudioProcessorEditor::undo()
     const auto current = synthProcessor.bank.toValueTree();
     synthProcessor.bank.fromValueTree (undoSnapshot);
     undoSnapshot = current;
+}
+
+void SynthAudioProcessorEditor::confirmStartFresh()
+{
+    const auto options = juce::MessageBoxOptions()
+                             .withIconType (juce::MessageBoxIconType::WarningIcon)
+                             .withTitle ("Start fresh?")
+                             .withMessage ("This empties every pattern, the song and all your recorded samples. It can't be undone.")
+                             .withButton ("Start fresh", 1)
+                             .withButton ("Cancel", 0)
+                             .withAssociatedComponent (this);
+
+    juce::AlertWindow::showAsync (options, [safeThis = juce::Component::SafePointer (this)] (int result)
+    {
+        if (safeThis == nullptr || result != 1)
+            return;
+
+        safeThis->synthProcessor.startFresh();
+        safeThis->undoSnapshot = {};
+        safeThis->undoButton.setEnabled (false);
+    });
 }
 
 void SynthAudioProcessorEditor::updateHeader()

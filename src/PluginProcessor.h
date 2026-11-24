@@ -39,6 +39,7 @@ public:
     void randomiseDrums (int pattern);
     void randomiseMelody (int pattern, int track);
     void randomiseAllMelodies (int pattern);
+    void startFresh(); // stops, and empties every pattern, the song and the samples; resets every parameter
     Scale getScale() const;
     bool loadSampleFile (int slot, const juce::File& file);
 

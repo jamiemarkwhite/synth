@@ -21,15 +21,41 @@ Download the zips from [Releases](https://github.com/jamiemarkwhite/synth/releas
 | `uBeat-<version>-macOS-AU.zip` | Instrument for Logic and GarageBand | `~/Library/Audio/Plug-Ins/Components` |
 | `uBeat-<version>-macOS-VST3.zip` | Instrument for other music apps | `~/Library/Audio/Plug-Ins/VST3` |
 
-The builds aren't notarised by Apple, so macOS refuses to open them at first. After copying them into place, clear the download flag in Terminal:
+`~/Library` is hidden in Finder. To get there, press Cmd+Shift+G in Finder and paste the folder path. If the `Components` or `VST3` folder doesn't exist yet, create it.
 
-```sh
-xattr -dr com.apple.quarantine /Applications/uBeat.app
-xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/uBeat.component
-xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/uBeat.vst3
-```
+### Getting past macOS security
 
-For the app, you can instead try to open it once, then click **Open Anyway** in System Settings > Privacy & Security.
+macOS adds a "downloaded from the internet" flag (the quarantine flag) to everything you download. Apps and plugins carrying that flag only open if Apple has notarised them. μBeat's builds aren't notarised, because that needs a paid Apple developer account. So the first time you open the app, macOS blocks it with a message saying it can't be opened, that Apple could not verify it, or that it is damaged. The files aren't damaged: the block comes from the flag. Only clear the flag on files you downloaded from the [Releases page](https://github.com/jamiemarkwhite/synth/releases).
+
+There are two ways past it.
+
+**Option 1: System Settings (the app only)**
+
+1. Double-click `uBeat.app`. macOS blocks it. Click **Done** or **OK**, not **Move to Bin** (or **Move to Trash**).
+2. Open System Settings > Privacy & Security and scroll down to Security.
+3. Click **Open Anyway** next to the message about uBeat, then confirm with your password.
+
+After that, the app opens normally. If macOS says the app is damaged, there is no Open Anyway button: use option 2.
+
+**Option 2: Terminal (the app and the plugins)**
+
+1. Copy the files into place (see the table above).
+2. Open Terminal (Applications > Utilities).
+3. Paste these lines and press Return. Each line clears the flag from one format; a line for a format you didn't install prints "No such file" and does nothing else.
+
+   ```sh
+   xattr -dr com.apple.quarantine /Applications/uBeat.app
+   xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/uBeat.component
+   xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/uBeat.vst3
+   ```
+
+4. Open the app, or restart your music app so it picks up the plugins.
+
+### If Logic doesn't show μBeat
+
+If Logic checked the AU before you cleared the flag, it remembers the failure. Open Logic Pro > Settings > Plug-in Manager, find μBeat, select it and click **Reset & Rescan Selection**.
+
+To check the plugin yourself, run `auval -v aumu Ubt1 Ubea` in Terminal. It ends with `AU VALIDATION SUCCEEDED` when the plugin is installed correctly.
 
 ## The top bar
 
@@ -47,6 +73,7 @@ These controls are always on screen, whichever tab is open.
 | COPY TO | Copies the current pattern into the next one and switches to it, so you can make a variation. |
 | CLEAR | Empties the current pattern: drums, samples and every synth part. |
 | DICE | Makes a random beat and a part for every synth track. |
+| START FRESH | Empties everything: all four patterns, the song and every sample slot. Sounds, mutes, solos and settings go back to how they start, and playback stops. It asks first, and can't be undone. |
 | UNDO | Undoes the last Dice, Clear or Copy. Pressing it again puts the change back. Single cell edits and clearing a sample slot cannot be undone. |
 
 ## Drums tab

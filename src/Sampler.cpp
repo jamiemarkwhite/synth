@@ -273,6 +273,15 @@ void Sampler::stopRecording()
     recordState.compare_exchange_strong (expected, stopRequested);
 }
 
+void Sampler::cancelRecording()
+{
+    if (recordState.load() == idle)
+        return;
+
+    discardRecording.store (true);
+    stopRecording();
+}
+
 int Sampler::getRecordingSlot() const
 {
     return recordState.load() == idle ? -1 : recordSlot.load();
@@ -288,6 +297,12 @@ Sampler::RecordResult Sampler::collectRecording()
 {
     if (recordState.load() != finished)
         return RecordResult::none;
+
+    if (discardRecording.exchange (false))
+    {
+        recordState.store (idle);
+        return RecordResult::none;
+    }
 
     const auto length = recordedSamples.load();
     const auto slot = recordSlot.load();

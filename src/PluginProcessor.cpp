@@ -458,6 +458,22 @@ void SynthAudioProcessor::randomiseAllMelodies (int pattern)
     PatternGenerator::randomiseAllMelodies (bank, pattern, getScale(), random);
 }
 
+void SynthAudioProcessor::startFresh()
+{
+    groovebox.setPlaying (false);
+    groovebox.setRecording (false);
+
+    auto& sampler = groovebox.getSampler();
+    sampler.cancelRecording();
+    for (int slot = 0; slot < Sampler::numSlots; ++slot)
+        sampler.clearSample (slot);
+
+    bank.clearAll();
+
+    for (auto* parameter : getParameters())
+        parameter->setValueNotifyingHost (parameter->getDefaultValue());
+}
+
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new SynthAudioProcessor();

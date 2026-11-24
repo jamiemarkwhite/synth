@@ -102,6 +102,26 @@ public:
             expectEquals (sampler.takeInputPeak(), 0.0f);
         }
 
+        beginTest ("A cancelled recording is thrown away");
+        {
+            Sampler sampler;
+            sampler.prepare (rate);
+            sampler.startRecording (1);
+            feed (sampler, tone (24000, 0.5f, 2));
+            sampler.cancelRecording();
+            feed (sampler, tone (block, 0.5f, 2));
+            expect (sampler.collectRecording() == Sampler::RecordResult::none);
+            expect (! sampler.hasSample (1));
+            expectEquals (sampler.getRecordingSlot(), -1);
+
+            // The next recording is kept as normal.
+            sampler.startRecording (0);
+            feed (sampler, tone (24000, 0.5f, 2));
+            sampler.stopRecording();
+            feed (sampler, tone (block, 0.5f, 2));
+            expect (sampler.collectRecording() == Sampler::RecordResult::recorded);
+        }
+
         beginTest ("A silent recording is reported as too quiet");
         {
             Sampler sampler;

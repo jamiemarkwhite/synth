@@ -64,6 +64,7 @@ public:
 
     void startRecording (int slot);
     void stopRecording();
+    void cancelRecording(); // stops and throws the recording away
     int getRecordingSlot() const; // -1 when not recording
     float getRecordingProgress() const;
     RecordResult collectRecording(); // call regularly; installs a finished recording
@@ -119,5 +120,6 @@ private:
     std::atomic<int> recordState { idle };
     std::atomic<int> recordSlot { -1 };
     std::atomic<int> recordedSamples { 0 };
+    std::atomic<bool> discardRecording { false };
     std::atomic<float> inputPeak { 0.0f };
 };

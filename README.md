@@ -14,7 +14,7 @@ A groovebox for kids, built with [JUCE](https://juce.com). Drums, your own mic r
 
 ## Download
 
-Get the latest Mac build from [Releases](https://github.com/jamiemarkwhite/synth/releases). It runs on Apple silicon and Intel Macs. See [Installing](docs/user-guide.md#installing) for where each file goes. The builds aren't notarised by Apple, so macOS blocks them until you allow them.
+Get the latest Mac build from [Releases](https://github.com/jamiemarkwhite/synth/releases). It runs on Apple silicon and Intel Macs. See [Installing](docs/user-guide.md#installing) for where each file goes. The builds aren't notarised by Apple, so macOS blocks them at first: [Getting past macOS security](docs/user-guide.md#getting-past-macos-security) shows how to open them.
 
 ## Build
 
