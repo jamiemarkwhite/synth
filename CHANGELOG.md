@@ -4,6 +4,10 @@ All notable changes to this project are listed here. The format follows [Keep a 
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-24
+
+First release. Universal (Apple silicon and Intel) macOS builds of the app, AU and VST3.
+
 ### Added
 
 - μBeat: a JUCE plugin in AU, VST3 and standalone formats, built with CMake. The AU is an instrument (`aumu Ubt1 Ubea`) so Logic can load it.
@@ -28,3 +32,6 @@ All notable changes to this project are listed here. The format follows [Keep a 
 - Unit tests for the engine (`uBeatTests`, run by CTest) and a tool that renders each tab to PNG (`UiSnapshot`).
 - [User guide](docs/user-guide.md), [developer guide](docs/developer-guide.md) and [contributing guide](CONTRIBUTING.md), with screenshots.
 - Released under the AGPLv3.
+
+[Unreleased]: https://github.com/jamiemarkwhite/synth/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/jamiemarkwhite/synth/releases/tag/v0.1.0

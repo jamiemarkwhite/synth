@@ -12,6 +12,10 @@ A groovebox for kids, built with [JUCE](https://juce.com). Drums, your own mic r
 - **Sequencer:** four patterns, a song chain, swing, record, mute and solo, and a metronome.
 - **Dice:** writes a random beat, plus a part for each track in its own style, so the parts fit together.
 
+## Download
+
+Get the latest Mac build from [Releases](https://github.com/jamiemarkwhite/synth/releases). It runs on Apple silicon and Intel Macs. See [Installing](docs/user-guide.md#installing) for where each file goes. The builds aren't notarised by Apple, so macOS blocks them until you allow them.
+
 ## Build
 
 You need macOS, CMake (`brew install cmake`) and the Xcode Command Line Tools. The first configure downloads JUCE.

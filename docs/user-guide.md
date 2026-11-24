@@ -4,12 +4,32 @@
 
 ## Getting started
 
-1. Build it (see the [README](../README.md#build)) and open `build/uBeat_artefacts/Release/Standalone/uBeat.app`.
+1. Open the μBeat app (see [Installing](#installing)).
 2. Press the space bar. A demo beat with bass, strings and a tune plays.
 3. Press **DICE** in the top bar for a new random beat and parts, as many times as you like.
 4. Press **UNDO** to go back to the last one.
 
 If there is no sound, click **Options** at the top of the window and pick your speakers.
+
+## Installing
+
+Download the zips from [Releases](https://github.com/jamiemarkwhite/synth/releases), or build them yourself (see the [README](../README.md#build)). Each zip holds one format:
+
+| Zip | What it is | Where it goes |
+| --- | --- | --- |
+| `uBeat-<version>-macOS-App.zip` | The app on its own | `/Applications` |
+| `uBeat-<version>-macOS-AU.zip` | Instrument for Logic and GarageBand | `~/Library/Audio/Plug-Ins/Components` |
+| `uBeat-<version>-macOS-VST3.zip` | Instrument for other music apps | `~/Library/Audio/Plug-Ins/VST3` |
+
+The builds aren't notarised by Apple, so macOS refuses to open them at first. After copying them into place, clear the download flag in Terminal:
+
+```sh
+xattr -dr com.apple.quarantine /Applications/uBeat.app
+xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/uBeat.component
+xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/uBeat.vst3
+```
+
+For the app, you can instead try to open it once, then click **Open Anyway** in System Settings > Privacy & Security.
 
 ## The top bar
 
@@ -149,12 +169,7 @@ The standalone app saves everything when you quit and brings it back next time: 
 
 ## Using it in Logic
 
-Logic loads the AU version. Copy it into the plug-ins folder, check it with Apple's validator, then restart Logic:
-
-```sh
-cp -R build/uBeat_artefacts/Release/AU/uBeat.component ~/Library/Audio/Plug-Ins/Components/
-auval -v aumu Ubt1 Ubea
-```
+Logic loads the AU version. Install it (see [Installing](#installing)), restart Logic, and check it in Logic's Plug-in Manager if it doesn't show up. From Terminal, `auval -v aumu Ubt1 Ubea` runs the same check.
 
 It appears under Instruments > AU Instruments > uBeat > μBeat.
 

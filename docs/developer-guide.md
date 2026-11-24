@@ -4,7 +4,7 @@ How the code is put together, and what to change when adding things. For what th
 
 ## Building and testing
 
-Needs CMake and the Xcode Command Line Tools. The first configure downloads JUCE 9.0.6 with FetchContent. Builds are universal (arm64 and x86_64).
+Needs CMake and the Xcode Command Line Tools. The first configure downloads JUCE 9.0.6 with FetchContent. Builds are universal (arm64 and x86_64); check with `lipo -archs` on the binary inside a bundle.
 
 ```sh
 cmake -B build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
@@ -21,6 +21,21 @@ CMake builds four things:
 | `UiSnapshot` | Renders each tab of the editor to a PNG without opening a window: `build/UiSnapshot_artefacts/Release/UiSnapshot <folder>`. The screenshots in `docs/images` come from it. |
 
 `ENGINE_SOURCES` in `CMakeLists.txt` lists the files that have no UI or plugin dependencies. The tests build only those, linked against `juce_audio_basics`, `juce_data_structures` and `juce_dsp`, so engine code must not include plugin or GUI modules.
+
+## Making a release
+
+1. Set the version in `project(uBeat VERSION ...)` in `CMakeLists.txt`.
+2. Move the `[Unreleased]` entries in `CHANGELOG.md` under a new version heading with the date.
+3. Build in a clean folder, run the tests, and check every binary is universal:
+
+   ```sh
+   cmake -B build-release -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
+   cmake --build build-release -j8
+   ctest --test-dir build-release --output-on-failure
+   ```
+
+4. Commit, tag `v<version>` and push the tag.
+5. Zip each format with `ditto -c -k --keepParent <bundle> uBeat-<version>-macOS-<App|AU|VST3>.zip`, and attach the zips to a GitHub release for the tag (`gh release create`).
 
 ## Source layout
 
@@ -122,7 +137,8 @@ The standalone app saves state when it quits. A new processor loads the demo pat
 
 ## Known gaps
 
-- The AU has not yet been run through `auval` or loaded in Logic.
+- The AU passes `auval`, but has not been tried in a Logic session.
+- Release builds are ad-hoc signed and not notarised, because there is no Developer ID certificate. Users have to clear the quarantine flag (see the user guide's Installing section).
 - Recording samples from inside Logic is untested. The plugin has an audio input, but how Logic routes a microphone into an instrument has not been checked.
 - The standalone app mutes its input by default to avoid feedback. The editor turns that off on opening (`unmuteStandaloneInput`); this builds but has not been confirmed on screen.
 - Undo covers Dice, Clear and Copy only. Single grid edits and clearing a sample slot cannot be undone.
