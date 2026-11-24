@@ -1,5 +1,5 @@
-// Draws μBeat's app icon on the macOS icon grid, as icon-1024.png and icon-32.png.
-// JUCE builds the .icns from those two files. Usage: IconMaker <folder>
+// Draws μBeat's app icon on the macOS icon grid as icon-1024.png. CMakeLists.txt builds the .icns
+// from it. Usage: IconMaker <folder>
 
 #include "ui/Theme.h"
 
@@ -84,16 +84,11 @@ int main (int argc, char** argv)
     const auto folder = juce::File::getCurrentWorkingDirectory().getChildFile (juce::String (argv[1]));
     folder.createDirectory();
 
-    const auto icon = drawIcon();
-    const auto small = icon.rescaled (32, 32, juce::Graphics::highResamplingQuality);
-
-    for (const auto& [image, name] : { std::pair { icon, "icon-1024.png" }, std::pair { small, "icon-32.png" } })
+    const auto file = folder.getChildFile ("icon-1024.png");
+    if (! writePng (drawIcon(), file))
     {
-        if (! writePng (image, folder.getChildFile (name)))
-        {
-            std::cerr << "Couldn't write " << folder.getChildFile (name).getFullPathName() << "\n";
-            return 1;
-        }
+        std::cerr << "Couldn't write " << file.getFullPathName() << "\n";
+        return 1;
     }
 
     return 0;

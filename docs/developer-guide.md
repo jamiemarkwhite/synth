@@ -18,7 +18,7 @@ CMake builds these targets:
 | --- | --- |
 | `uBeat_AU`, `uBeat_VST3`, `uBeat_Standalone` | The plugin in each format, from the shared `uBeat` code. AU type `aumu`, manufacturer `Ubea`, subtype `Ubt1`. Files and targets use the ASCII name `uBeat`; hosts show `PLUGIN_NAME`, `μBeat`. |
 | `uBeatTests` | Console app running every `juce::UnitTest` in `tests/`. Prints `ALL TESTS PASSED` or exits with 1. Registered with CTest. |
-| `IconMaker` | Draws the app icon: `build/IconMaker_artefacts/Release/IconMaker assets` writes `assets/icon-1024.png` and `assets/icon-32.png`. JUCE builds each bundle's `.icns` from those two files (`ICON_BIG`, `ICON_SMALL`) when CMake configures, so re-run `cmake -B build` after changing them. |
+| `IconMaker` | Draws the app icon: `build/IconMaker_artefacts/Release/IconMaker assets` writes `assets/icon-1024.png`. When CMake configures, it resizes that to every macOS icon size and builds `AppIcon.icns` with Apple's `iconutil`, replacing the one JUCE makes (JUCE's stores small sizes in a format Finder can draw as noise). Re-run `cmake -B build` after changing the PNG. |
 | `UiSnapshot` | Renders each tab of the editor to a PNG without opening a window: `build/UiSnapshot_artefacts/Release/UiSnapshot <folder>`. The screenshots in `docs/images` come from it. |
 
 `ENGINE_SOURCES` in `CMakeLists.txt` lists the files that have no UI or plugin dependencies. The tests build only those, linked against `juce_audio_basics`, `juce_data_structures` and `juce_dsp`, so engine code must not include plugin or GUI modules.

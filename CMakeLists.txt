@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22)
 # Must come before project(), which otherwise fixes the architecture to the host's.
 set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "")
 
-project(uBeat VERSION 0.1.2)
+project(uBeat VERSION 0.1.3)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -45,9 +45,23 @@ juce_add_plugin(uBeat
     FORMATS AU VST3 Standalone
     PRODUCT_NAME "uBeat"
     ICON_BIG "${CMAKE_CURRENT_SOURCE_DIR}/assets/icon-1024.png"
-    ICON_SMALL "${CMAKE_CURRENT_SOURCE_DIR}/assets/icon-32.png"
     PLUGIN_NAME "μBeat"
 )
+
+# JUCE's .icns stores small sizes in a format Finder can draw as noise. Replace it with one built by
+# Apple's iconutil from every size, at the path JUCE packages into each bundle.
+get_target_property(juce_generated_dir uBeat JUCE_GENERATED_SOURCES_DIRECTORY)
+set(iconset "${CMAKE_CURRENT_BINARY_DIR}/AppIcon.iconset")
+file(REMOVE_RECURSE "${iconset}")
+file(MAKE_DIRECTORY "${iconset}")
+foreach(size 16 32 128 256 512)
+    math(EXPR double "${size} * 2")
+    execute_process(COMMAND sips -z ${size} ${size} "${CMAKE_CURRENT_SOURCE_DIR}/assets/icon-1024.png"
+                            --out "${iconset}/icon_${size}x${size}.png" OUTPUT_QUIET COMMAND_ERROR_IS_FATAL ANY)
+    execute_process(COMMAND sips -z ${double} ${double} "${CMAKE_CURRENT_SOURCE_DIR}/assets/icon-1024.png"
+                            --out "${iconset}/icon_${size}x${size}@2x.png" OUTPUT_QUIET COMMAND_ERROR_IS_FATAL ANY)
+endforeach()
+execute_process(COMMAND iconutil -c icns "${iconset}" -o "${juce_generated_dir}/AppIcon.icns" COMMAND_ERROR_IS_FATAL ANY)
 
 target_sources(uBeat PRIVATE
     ${ENGINE_SOURCES}
