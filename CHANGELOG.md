@@ -6,6 +6,8 @@ All notable changes to this project are listed here. The format follows [Keep a 
 
 ### Added
 
+- App icon (a neon μ) for the app, AU and VST3, in the macOS icon format.
+
 - **Save song** and **Open song** in the standalone app's Options menu, which save songs as `.ubeat` files.
 
 ## [0.1.1] - 2026-11-24

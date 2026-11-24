@@ -44,6 +44,8 @@ juce_add_plugin(uBeat
     VST3_CATEGORIES Instrument Synth
     FORMATS AU VST3 Standalone
     PRODUCT_NAME "uBeat"
+    ICON_BIG "${CMAKE_CURRENT_SOURCE_DIR}/assets/icon-1024.png"
+    ICON_SMALL "${CMAKE_CURRENT_SOURCE_DIR}/assets/icon-32.png"
     PLUGIN_NAME "μBeat"
 )
 
@@ -134,6 +136,19 @@ target_link_libraries(UiSnapshot
     PRIVATE
         juce::juce_audio_utils
         juce::juce_dsp
+    PUBLIC
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags
+)
+
+# Development tool: draws the app icon. Run: IconMaker assets
+juce_add_console_app(IconMaker PRODUCT_NAME "IconMaker")
+target_sources(IconMaker PRIVATE tools/IconMaker.cpp)
+target_include_directories(IconMaker PRIVATE src)
+target_compile_definitions(IconMaker PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_link_libraries(IconMaker
+    PRIVATE
+        juce::juce_gui_basics
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags
