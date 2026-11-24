@@ -52,12 +52,14 @@ target_sources(uBeat PRIVATE
     src/Presets.cpp
     src/PluginProcessor.cpp
     src/PluginEditor.cpp
+    src/StandaloneApp.cpp
     src/ui/NeonLookAndFeel.cpp
     src/ui/Pages.cpp
     src/ui/Widgets.cpp
 )
 
 target_compile_definitions(uBeat PUBLIC
+    JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
     JUCE_VST3_CAN_REPLACE_VST2=0

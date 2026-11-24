@@ -4,6 +4,10 @@ All notable changes to this project are listed here. The format follows [Keep a 
 
 ## [Unreleased]
 
+### Added
+
+- **Save song** and **Open song** in the standalone app's Options menu, which save songs as `.ubeat` files.
+
 ## [0.1.1] - 2026-11-24
 
 ### Added

@@ -56,6 +56,7 @@ CMake builds four things:
 | `ParamIds.h` | Every parameter ID. |
 | `Presets.h/.cpp` | The synth sound presets. |
 | `PluginProcessor.h/.cpp` | The JUCE `AudioProcessor`: parameter layout, reading parameters for the audio thread, saving and loading state, loading sample files. |
+| `StandaloneApp.cpp` | The standalone app: JUCE's standard app and window, with an Options menu that saves and opens `.ubeat` files. Built because `JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP` is set. |
 | `PluginEditor.h/.cpp` | The window: top bar, tabs, song bar, keyboard, undo, and a 30 Hz timer that refreshes the pages. |
 | `ui/Pages.h/.cpp` | One page per tab: Drums, Samples, Melody, Sound and Mix. |
 | `ui/Widgets.h/.cpp` | Knobs, choices, toggles, the step grid, track bar, song bar, pads, keyboard and transport buttons. |
@@ -126,7 +127,7 @@ Sessions store choice parameters by index. If a choice's options change meaning,
 - `Patterns`, from `PatternBank::toValueTree`. Properties: `selected`, `songMode`, `song` (16 comma-separated pattern indices, -1 for empty). One `Pattern` child per pattern with comma-separated hex masks: `drums` (one per drum), `samples` (one per slot), and `melody1` to `melody5` and `hold1` to `hold5` (one per step, a bit per row, for note starts and held steps). A pattern with a single `melody` property and no `melody1`, from before there were several synth tracks, loads that melody into the lead track.
 - `Samples`, from `Sampler::toValueTree`. One `Sample` child per filled slot with `slot`, `rate` (the sample's own sample rate) and `pcm16` (16-bit mono PCM, base64).
 
-The standalone app saves state when it quits. A new processor loads the demo pattern; a saved session replaces it.
+The standalone app saves state when it quits. A `.ubeat` song file holds exactly the bytes `getStateInformation` writes. A new processor loads the demo pattern; a saved session replaces it.
 
 ## Adding things
 

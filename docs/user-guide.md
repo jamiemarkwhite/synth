@@ -196,8 +196,8 @@ The standalone app saves everything when you quit and brings it back next time: 
 
 To keep a song, or to have several, use the **Options** button at the top left of the window:
 
-- **Save current state...** saves everything to a file. Pick a folder and give it a name such as `robot-song`. Each file holds one whole session: all four patterns, the song, every sound and setting, and the recorded samples.
-- **Load a saved state...** opens a file you saved, replacing what's on screen. Save first if you want to keep what you have.
+- **Save song...** saves everything to a `.ubeat` file. Pick a folder and give it a name such as `robot-song`; μBeat adds `.ubeat` itself. Each file holds one whole session: all four patterns, the song, every sound and setting, and the recorded samples.
+- **Open song...** opens a `.ubeat` file, replacing what's on screen. Save first if you want to keep what you have.
 - **Reset to default state** goes back to how μBeat starts the first time, with the demo song. To start with nothing at all, use **START FRESH** instead.
 
 In Logic, everything is saved with the Logic project.
