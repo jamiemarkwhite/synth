@@ -4,10 +4,11 @@ All notable changes to this project are listed here. The format follows [Keep a 
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-11-24
+
 ### Added
 
 - App icon (a neon μ) for the app, AU and VST3, in the macOS icon format.
-
 - **Save song** and **Open song** in the standalone app's Options menu, which save songs as `.ubeat` files.
 
 ## [0.1.1] - 2026-11-24
@@ -45,6 +46,7 @@ First release. Universal (Apple silicon and Intel) macOS builds of the app, AU a
 - [User guide](docs/user-guide.md), [developer guide](docs/developer-guide.md) and [contributing guide](CONTRIBUTING.md), with screenshots.
 - Released under the AGPLv3.
 
-[Unreleased]: https://github.com/jamiemarkwhite/synth/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/jamiemarkwhite/synth/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/jamiemarkwhite/synth/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/jamiemarkwhite/synth/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/jamiemarkwhite/synth/releases/tag/v0.1.0
