@@ -4,6 +4,8 @@ All notable changes to this project are listed here. The format follows [Keep a 
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-24
+
 ### Added
 
 - **Start Fresh** button: after asking, empties every pattern, the song and the samples, and puts every sound and setting back to how it starts.
@@ -37,5 +39,6 @@ First release. Universal (Apple silicon and Intel) macOS builds of the app, AU a
 - [User guide](docs/user-guide.md), [developer guide](docs/developer-guide.md) and [contributing guide](CONTRIBUTING.md), with screenshots.
 - Released under the AGPLv3.
 
-[Unreleased]: https://github.com/jamiemarkwhite/synth/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/jamiemarkwhite/synth/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/jamiemarkwhite/synth/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/jamiemarkwhite/synth/releases/tag/v0.1.0
